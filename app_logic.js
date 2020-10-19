@@ -16,9 +16,9 @@ Potom sa zobrazuje UI pre ziskanie cisla od uzivatela co je na rade:
 
 
 
-//hotovo
+//game sets up 
 var BoardLength;
-function setUpGame(BoardLength){
+exports.setUpGame = (BoardLength) => {
     if ((3 < BoardLength) && (BoardLength <= 20)) {
         return 0;
     } else {
@@ -31,27 +31,26 @@ function setUpGame(BoardLength){
 // 2.2 pripis cislo do array $gameBoard na spravny index
 // 2.3 skontroluj ci hrac vyhral ak ma 3 po sebe cez zvlast funkciu function checkLimit(ArrayData)
 
-var gameBoard = new Array(BoardLength).fill(0); // 2.0 vytvor array z $BoardLength
-console.log("spustam", checkWinningCondintion(21));
-function checkWinningCondintion(GivenNumber){
-    if ((0 < GivenNumber) && (GivenNumber < 21)){ // 2.1 skontroluj ci je cislo od 0 do 20 cez funkciu isInRange()
-        gameBoard[GivenNumber - 1] = 1; // 2.2 pripis cislo do array $gameBoard na spravny index
-        return gameBoard;
+var totalOnes = 0;
+global.gameBoard = new Array(BoardLength).fill(0);     // 2.0 vytvor array z $BoardLength
+
+exports.checkWinningCondintion = (GivenNumber) => {
+    if ((0 < GivenNumber) && (GivenNumber < 21)){   // 2.1 skontroluj ci je cislo od 0 do 20 cez funkciu isInRange()
+        gameBoard[GivenNumber - 1] = 1;             // 2.2 pripis cislo do array $gameBoard na spravny index
+        function checkLimit() {                     // 2.3 skontroluj ci hrac vyhral ak ma 3 po sebe cez zvlast funkciu function checkLimit(ArrayData)
+            for (var i = 0; i < gameBoard.length; i++) {
+                if (gameBoard[i] == 1) {
+                    totalOnes ++;
+                    if (totalOnes == 3) {
+                        return 1;
+                    }
+                } else {
+                    totalOnes = 0;
+                }
+            }
+            return 0;
+        }
     } else {
         return 2 ;
-    }
-}
-
-
-
-
-
-// 2.3 skontroluj ci hrac vyhral ak ma 3 po sebe cez zvlast funkciu function checkLimit(ArrayData)
-var totalOnes;
-var gameBoard = [0,0,0,1,0,0,1,1,0,0,0];
-var i = 0;
-function checkLimit(ArrayData){
-    while (i < 10) {
-        text += "the value is " + i;
     }
 }
