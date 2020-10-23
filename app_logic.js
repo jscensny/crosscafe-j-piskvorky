@@ -17,9 +17,13 @@ Potom sa zobrazuje UI pre ziskanie cisla od uzivatela co je na rade:
 
 
 //game sets up 
-var BoardLength;
-exports.setUpGame = (BoardLength) => {
-    if ((3 < BoardLength) && (BoardLength <= 20)) {
+var BoardLength = 0;
+exports.setUpGame = (boardLen) => {
+    console.log('Calling setUpGame in app_logic.js');
+    if ((3 < boardLen) && (boardLen <= 20)) {
+        BoardLength = boardLen;
+        console.log('Value given in BoardLength inside setUpGame is ', BoardLength);
+        global.gameBoard = new Array(BoardLength).fill(0);
         return 0;
     } else {
         return 1;
@@ -32,11 +36,12 @@ exports.setUpGame = (BoardLength) => {
 // 2.3 skontroluj ci hrac vyhral ak ma 3 po sebe cez zvlast funkciu function checkLimit(ArrayData)
 
 var totalOnes = 0;
+console.log('Value given in BoardLength is ', BoardLength);
 global.gameBoard = new Array(BoardLength).fill(0);     // 2.0 vytvor array z $BoardLength
 
 exports.checkWinningCondintion = (GivenNumber) => {
     if ((0 < GivenNumber) && (GivenNumber < 21)){   // 2.1 skontroluj ci je cislo od 0 do 20 cez funkciu isInRange()
-        gameBoard[GivenNumber - 1] = 1;             // 2.2 pripis cislo do array $gameBoard na spravny index
+        global.gameBoard[GivenNumber - 1] = 1;             // 2.2 pripis cislo do array $gameBoard na spravny index
         function checkLimit() {                     // 2.3 skontroluj ci hrac vyhral ak ma 3 po sebe cez zvlast funkciu function checkLimit(ArrayData)
             for (var i = 0; i < gameBoard.length; i++) {
                 if (gameBoard[i] == 1) {
