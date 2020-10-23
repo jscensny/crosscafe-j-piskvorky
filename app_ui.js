@@ -18,24 +18,35 @@ var rli = readline.createInterface(process.stdin, process.stdout);
         if (!isNaN(size)) {
             if ( logic.setUpGame(size) == 0 ) {
                 console.log('We have setup the game');
+                
+                var flag = true;
+                while(flag) {
+                    flag = false;
+                    rli.question(setPromptInGame(round) + '|  Zadej tah: ', function(turn) {
+                        console.log('We are going to check winning conditions in round: ', round, ' and turn: ', turn);
+                        if (logic.checkWinningCondintion(turn) == 0) {
+                            console.log('checkWC returned: ', 0);
+                            round++; //sleep(1000); //continue;
+                        }
+                        else if (logic.checkWinningCondintion(turn) == 1) {
+                            console.log('checkWC returned: ', 1);
+                            console.log(writePlayer(rnd) + ' won!');
+                            return;
+                        }
+                        else if (logic.checkWinningCondintion(turn) == 2) {
+                            console.log('checkWC returned: ', 2);
+                            console.log('Chybny vstup.');
+                            //sleep(1000);
+                            // continue;
+                        }
+                    });
+                }
             }
-        };
+        }
     });
+                
 
-    rli.question(setPromptInGame(round) + '|  Zadej tah: ', function(turn) {
-        if (logic.checkWinningCondintion(turn) == 0) {
-            round++; sleep(1000); continue;
-        }
-        else if (logic.checkWinningCondintion(turn) == 1) {
-            console.log(writePlayer(rnd) + ' won!');
-            return;
-        }
-        else if (logic.checkWinningCondintion(turn) == 2) {
-            console.log('Chybny vstup.');
-            sleep(1000);
-            continue;
-        }
-    });
+
 
 
     rli.prompt();
