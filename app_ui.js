@@ -1,3 +1,10 @@
+
+
+// ------------------------
+// ----  app_ui.js
+// ------------------------
+
+const logic = require ('./app_logic');
 var round = 0;     // even is player A, odd is player B
 
 const readline = require('readline');
@@ -7,8 +14,9 @@ var rli = readline.createInterface(process.stdin, process.stdout);
         console.log('We are in with value: ', size);
         if (!isNaN(size)) {
 
-            if ( setUpGame(size) == 0 ) {
-                rli.setPromp(setPromptInGame(round));
+            if ( logic.setUpGame(size) == 0 ) {
+                console.log('We have setup the game');
+                rli.setPrompt(setPromptInGame(round));
                 rli.prompt();
                 rli.on('line', function() {
                     console.log('Hey ho');
@@ -73,7 +81,8 @@ function setPromptInGame(rnd) {
 
 function writeBoard () {
     var out = '|';
-    for ( var i; i < gameBoard.length; i++ )
+    console.log('Size of gameBoard is ', gameBoard.length);
+    for ( var i = 0; i < gameBoard.length; i++ )
         out += gameBoard[i] + '|';
     return out;
 }
