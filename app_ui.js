@@ -13,7 +13,8 @@ const readline = require('readline');
 const { exit } = require('process');
 var rli = readline.createInterface(process.stdin, process.stdout);
     // rli.setPrompt('Zadej velikost hraciho planu: ');
-    rli.question('Zadej velikost hraciho planu: ', function(size) {
+    onRepeatSize();
+    function onRepeatSize(){rli.question('Zadej velikost hraciho planu: ', function(size) {
         console.log('We are in with value: ', size);
         if (!isNaN(size)) {
             if ( logic.setUpGame(size) == 0 ) {
@@ -22,32 +23,39 @@ var rli = readline.createInterface(process.stdin, process.stdout);
                 var flag = true;
                 while(flag) {
                     flag = false;
-                    rli.question(setPromptInGame(round) + '|  Zadej tah: ', function(turn) {
-                        console.log('We are going to check winning conditions in round: ', round, ' and turn: ', turn);
-                        if (logic.checkWinningCondintion(turn) == 0) {
-                            console.log('checkWC returned: ', 0);
-                            round++; //sleep(1000); //continue;
-                        }
-                        else if (logic.checkWinningCondintion(turn) == 1) {
-                            console.log('checkWC returned: ', 1);
-                            console.log(writePlayer(rnd) + ' won!');
-                            return;
-                        }
-                        else if (logic.checkWinningCondintion(turn) == 2) {
-                            console.log('checkWC returned: ', 2);
-                            console.log('Chybny vstup.');
-                            //sleep(1000);
-                            // continue;
-                        }
-                    });
+                    onRepeatTurn();      
                 }
+            } else {
+                console.log('Chybny vstup. Board moze byt od 3 - 20 cisel.');
+                onRepeatSize()
             }
         }
-    });
+    });}
                 
 
 
-
+    function onRepeatTurn(){
+        rli.question(setPromptInGame(round) + '|  Zadej tah: ', function(turn) {
+            console.log('We are going to check winning conditions in round: ', round, ' and turn: ', turn);
+            if (logic.checkWinningCondintion(turn) == 0) {
+                console.log('checkWC returned: ', 0);
+                round++; //sleep(1000); //continue;
+                onRepeatTurn();
+            }
+            else if (logic.checkWinningCondintion(turn) == 1) {
+                console.log('checkWC returned: ', 1);
+                console.log(writePlayer(round) + ' won!');
+                process.exit();
+            }
+            else /*if (logic.checkWinningCondintion(turn) == 2) */{
+                console.log('checkWC returned: ', 2);
+                console.log('Chybny vstup.');
+                // sleep(1000);
+                // continue;
+                onRepeatTurn();
+            }
+        });
+    }
 
     rli.prompt();
     rli.on('line', function(size) {

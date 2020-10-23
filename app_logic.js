@@ -41,13 +41,12 @@ console.log('Value given in BoardLength is ', BoardLength);
 // global.gameBoard = new Array(BoardLength).fill(0);     // 2.0 vytvor array z $BoardLength
 
 exports.checkWinningCondintion = (GivenNumber) => {
-    if ((0 < GivenNumber) && (GivenNumber < 21)){   // 2.1 skontroluj ci je cislo od 0 do 20 cez funkciu isInRange()
+    if ((0 < GivenNumber) && (GivenNumber < BoardLength)){   // 2.1 skontroluj ci je cislo od 0 do 20 cez funkciu isInRange()
         global.gameBoard[GivenNumber - 1] = 1;             // 2.2 pripis cislo do array $gameBoard na spravny index
-        function checkLimit() {                     // 2.3 skontroluj ci hrac vyhral ak ma 3 po sebe cez zvlast funkciu function checkLimit(ArrayData)
             for (var i = 0; i < gameBoard.length; i++) {
                 if (gameBoard[i] == 1) {
                     totalOnes ++;
-                    if (totalOnes == 3) {
+                    if (totalOnes >= 3) {
                         return 1;
                     }
                 } else {
@@ -55,7 +54,6 @@ exports.checkWinningCondintion = (GivenNumber) => {
                 }
             }
             return 0;
-        }
     } else {
         return 2 ;
     }
