@@ -1,4 +1,6 @@
-
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
 // ------------------------
 // ----  app_ui.js
@@ -8,23 +10,34 @@ const logic = require ('./app_logic');
 var round = 0;     // even is player A, odd is player B
 
 const readline = require('readline');
+const { exit } = require('process');
 var rli = readline.createInterface(process.stdin, process.stdout);
     // rli.setPrompt('Zadej velikost hraciho planu: ');
     rli.question('Zadej velikost hraciho planu: ', function(size) {
         console.log('We are in with value: ', size);
         if (!isNaN(size)) {
-
             if ( logic.setUpGame(size) == 0 ) {
                 console.log('We have setup the game');
-                rli.setPrompt(setPromptInGame(round));
-                rli.prompt();
-                rli.on('line', function() {
-                    console.log('Hey ho');
-                    rli.close();
-                });
             }
+        };
+    });
+
+    rli.question(setPromptInGame(round) + '|  Zadej tah: ', function(turn) {
+        if (logic.checkWinningCondintion(turn) == 0) {
+            round++; sleep(1000); continue;
+        }
+        else if (logic.checkWinningCondintion(turn) == 1) {
+            console.log(writePlayer(rnd) + ' won!');
+            return;
+        }
+        else if (logic.checkWinningCondintion(turn) == 2) {
+            console.log('Chybny vstup.');
+            sleep(1000);
+            continue;
         }
     });
+
+
     rli.prompt();
     rli.on('line', function(size) {
         console.log('We are in');
@@ -72,10 +85,15 @@ function getForPlaygroundSize (rli) {
 };
 
 function setPromptInGame(rnd) {
+        return (writePlayer(rnd) + ' => ' + writeBoard());
+}
+
+
+function writePlayer(rnd) {
     if ( rnd % 2 == 0 )
-        return ('Player A => ' + writeBoard());
+        return ('Player A');
     else
-        return ('Player B => ' + writeBoard());
+        return ('Player B');
 }
 
 
